@@ -13,15 +13,15 @@
 #define RIGHT_PERVIY 30
  //#define RIGHT_VTOROY 30
 // #define RIGHT_TRETII
-#define L 20000
+#define L 100
 #define at 2
 #define dx 1
 #define dt 0.1
-#define time 2000
+#define time 1
 #define init_temp 10 // Начальное значение температуры на стержне
 const int xx = L/dx;
 const int tt = time/dt;
-#define MAKE_GNUPLOT 0 // Писать или нет в gnuplot файл (0, 1)
+#define MAKE_GNUPLOT 1 // Писать или нет в gnuplot файл (0, 1)
 // Вычисление граничных условий
 void calculate_border_conditions(double *T);
 // Центральная разность
@@ -218,7 +218,7 @@ void calculate_temperature(int rank, int total, double *stripe_old,
     memcpy(tmp, stripe_old, sizeof(double)*stripe_size);
     memcpy(stripe_old, stripe_new, sizeof(double)*stripe_size);
     memcpy(stripe_new, tmp, sizeof(double)*stripe_size);
-    //stripe_new = tmp;
+    stripe_new = tmp;
 }
 // t_left -- Tj-1; t_mid -- Tj; t_right -- Tj+1
 double central_difference(double t_left, double t_mid, double t_right)
