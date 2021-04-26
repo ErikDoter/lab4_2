@@ -214,7 +214,9 @@ void calculate_temperature(int rank, int total, double *stripe_old,
                                            stripe_old[i], stripe_old[i+1]);
     }
     // Копируем только что вычисленные значения в массив stripe_old
+    tmp = stripe_old;
     memcpy(stripe_old, stripe_new, sizeof(double)*stripe_size);
+    stripe_new = tmp;
 }
 // t_left -- Tj-1; t_mid -- Tj; t_right -- Tj+1
 double central_difference(double t_left, double t_mid, double t_right)
@@ -229,12 +231,10 @@ double left_border(double next_node)
     // ГУ первого рода
 #ifdef LEFT_PERVIY
     result = LEFT_PERVIY;
-    printf("%d", LEFT_PERVIY);
 #endif
     // ГУ второго рода
 #ifdef LEFT_VTOROY
     result = ((double)LEFT_VTOROY * dx)/at + next_node;
-    printf("%d",LEFT_VTOROY);
 #endif
     // ГУ третьего рода
 #ifdef LEFT_TRETII
@@ -257,7 +257,7 @@ double right_border(double prev_node)
     // ГУ второго рода
 #ifdef RIGHT_VTOROY
     result = ((double)RIGHT_VTOROY * dx)/at + prev_node;
-    printf("%d",RIGHT_VTOROY);
+    printf("%f",result);
 #endif
     // ГУ третьего рода
 #ifdef RIGHT_TRETII
