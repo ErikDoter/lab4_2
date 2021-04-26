@@ -218,7 +218,6 @@ void calculate_temperature(int rank, int total, double *stripe_old,
     memcpy(tmp, stripe_old, sizeof(double)*stripe_size);
     memcpy(stripe_old, stripe_new, sizeof(double)*stripe_size);
     memcpy(stripe_new, tmp, sizeof(double)*stripe_size);
-    stripe_new = tmp;
 }
 // t_left -- Tj-1; t_mid -- Tj; t_right -- Tj+1
 double central_difference(double t_left, double t_mid, double t_right)
