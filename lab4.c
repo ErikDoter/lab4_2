@@ -13,11 +13,11 @@
 //#define RIGHT_PERVIY 30
 #define RIGHT_VTOROY 30
 // #define RIGHT_TRETII
-#define L 128
+#define L 64
 #define at 2
-#define dx 2
-#define dt 1
-#define time 512
+#define dx 1
+#define dt 0.1
+#define time 51.2
 #define init_temp 10 // Начальное значение температуры на стержне
 const int xx = L/dx;
 const int tt = time/dt;
