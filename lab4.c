@@ -13,9 +13,9 @@
 //#define RIGHT_PERVIY 30
 #define RIGHT_VTOROY 30
 // #define RIGHT_TRETII
-#define L 64
+#define L 640
 #define at 2
-#define dx 1
+#define dx 10
 #define dt 1
 #define time 512
 #define init_temp 10 // Начальное значение температуры на стержне
