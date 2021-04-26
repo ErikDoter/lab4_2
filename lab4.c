@@ -11,14 +11,14 @@
 //#define LEFT_TRETII // ГУ третьего рода
 // Правая граница
 //#define RIGHT_PERVIY 30
-#define RIGHT_VTOROY 30
+#define RIGHT_VTOROY 100
 // #define RIGHT_TRETII
 #define L 64
 #define at 2
 #define dx 1
 #define dt 0.1
 #define time 51.2
-#define init_temp 10 // Начальное значение температуры на стержне
+#define init_temp 40 // Начальное значение температуры на стержне
 const int xx = L/dx;
 const int tt = time/dt;
 #define MAKE_GNUPLOT 1 // Писать или нет в gnuplot файл (0, 1)
@@ -229,10 +229,12 @@ double left_border(double next_node)
     // ГУ первого рода
 #ifdef LEFT_PERVIY
     result = LEFT_PERVIY;
+    printf("%d", LEFT_PERVIY);
 #endif
     // ГУ второго рода
 #ifdef LEFT_VTOROY
     result = ((double)LEFT_VTOROY * dx)/at + next_node;
+    printf("%d",LEFT_VTOROY);
 #endif
     // ГУ третьего рода
 #ifdef LEFT_TRETII
@@ -255,6 +257,7 @@ double right_border(double prev_node)
     // ГУ второго рода
 #ifdef RIGHT_VTOROY
     result = ((double)RIGHT_VTOROY * dx)/at + prev_node;
+    printf("%d",RIGHT_VTOROY);
 #endif
     // ГУ третьего рода
 #ifdef RIGHT_TRETII
