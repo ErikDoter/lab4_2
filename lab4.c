@@ -6,19 +6,19 @@
 #include <mpi.h>
 // Граничные условия
 // Левая граница
- #define LEFT_PERVIY 100 // ГУ первого рода
+ #define LEFT_PERVIY 50 // ГУ первого рода
 //#define LEFT_VTOROY 100 // ГУ второго рода
 //#define LEFT_TRETII // ГУ третьего рода
 // Правая граница
 //#define RIGHT_PERVIY 30
-#define RIGHT_VTOROY 100
+#define RIGHT_VTOROY 5
 // #define RIGHT_TRETII
 #define L 64
 #define at 2
 #define dx 1
 #define dt 0.1
 #define time 51.2
-#define init_temp 40 // Начальное значение температуры на стержне
+#define init_temp 20 // Начальное значение температуры на стержне
 const int xx = L/dx;
 const int tt = time/dt;
 #define MAKE_GNUPLOT 1 // Писать или нет в gnuplot файл (0, 1)
@@ -123,11 +123,10 @@ inaccurate!\n");*/
         // Если флаг MAKE_GNUPLOT не равен нулю, то собираем данныекорневым процессом на каждой итерации и ведём запись
         // в gnuplot файл
 #if MAKE_GNUPLOT
-        MPI_Gather(stripe_new, stripe_size, MPI_DOUBLE, T, stripe_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-        if(!rank)
-        {
-            write_data_to_file(f, T);
-        }
+            MPI_Gather(stripe_new, stripe_size, MPI_DOUBLE, T, stripe_size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+            if (!rank) {
+                write_data_to_file(f, T);
+            }
 #endif
     }
     MPI_Gather(stripe_new, stripe_size, MPI_DOUBLE, T, stripe_size,
@@ -205,7 +204,7 @@ void calculate_temperature(int rank, int total, double *stripe_old,
     else
     { // Если у нас только один процесс, то лента тоже одна
         stripe_new[0] = left_border(stripe_old[1]);
-        stripe_new[stripe_size-1] = right_border(stripe_old[stripe_size]);
+        stripe_new[stripe_size-1] = right_border(stripe_old[stripe_size-2]);
     }
     // Вычисляем значение температуры для середины ленты
     for(int i = 1; i < stripe_size-1; ++i)
@@ -214,9 +213,9 @@ void calculate_temperature(int rank, int total, double *stripe_old,
                                            stripe_old[i], stripe_old[i+1]);
     }
     // Копируем только что вычисленные значения в массив stripe_old
-    tmp = stripe_old;
-    stripe_old = stripe_new;
-    stripe_new = tmp;
+    //tmp = stripe_old;
+    memcpy(stripe_old, stripe_new, sizeof(double)*stripe_size);
+    //stripe_new = tmp;
 }
 // t_left -- Tj-1; t_mid -- Tj; t_right -- Tj+1
 double central_difference(double t_left, double t_mid, double t_right)
@@ -257,7 +256,6 @@ double right_border(double prev_node)
     // ГУ второго рода
 #ifdef RIGHT_VTOROY
     result = ((double)RIGHT_VTOROY * dx)/at + prev_node;
-    printf("%f",result);
 #endif
     // ГУ третьего рода
 #ifdef RIGHT_TRETII
