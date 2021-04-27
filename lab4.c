@@ -215,7 +215,7 @@ void calculate_temperature(int rank, int total, double *stripe_old,
     }
     // Копируем только что вычисленные значения в массив stripe_old
     tmp = stripe_old;
-    memcpy(stripe_old, stripe_new, sizeof(double)*stripe_size);
+    stripe_old = stripe_new;
     stripe_new = tmp;
 }
 // t_left -- Tj-1; t_mid -- Tj; t_right -- Tj+1
